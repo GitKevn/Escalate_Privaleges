@@ -1,0 +1,30 @@
+  internal static class Escalate
+    {
+        private static void Main()
+        {
+        }
+
+        private static void StartProcess(String FullTargetDir, String Command, String Parameters, Credential CRED)
+
+        {
+            Console.WriteLine("Starting Application");
+            Console.WriteLine(" TargetDir:{0}", FullTargetDir);
+            Console.WriteLine(" Command:{0}", Command);
+            Console.WriteLine("Parameters:{0}", Parameters);
+            Process P = new Process();
+            //
+            //Set various start parameters for the update and execute it
+            //
+            P.StartInfo.WorkingDirectory = FullTargetDir;
+            P.StartInfo.FileName = System.IO.Path.Combine(FullTargetDir, Command);
+            P.StartInfo.Arguments = Parameters;
+            P.StartInfo.UseShellExecute = false;
+            P.StartInfo.ErrorDialog = true;
+            P.StartInfo.Domain = CRED.Domain;
+            P.StartInfo.UserName = CRED.UserID;
+            System.Security.SecureString PWD = new System.Security.SecureString();
+            foreach (char C in CRED.Password.ToCharArray()) PWD.AppendChar(C);
+            P.StartInfo.Password = PWD;
+            P.Start();
+        }
+    }
